@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/dlviz.css" />
+    <link rel="stylesheet" type="text/css" href="hopfield2.css" />
+
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <h1>Holiday Hopfield networks</h1>
+
+        <p class="lead">
+          A <a href="http://en.wikipedia.org/wiki/Hopfield_network">Hopfield network</a> is a form of artificial neural network which can act as an <strong><a href="http://en.wikipedia.org/wiki/Content-addressable_memory">content-addressable memory</a></strong>.
+        </p>
+
+        <p class="lead">
+          Try it out for yourself! The network on this page has &ldquo;memorized&rdquo; some holiday-themed images.
+        </p>
+
+        <ol>
+          <li>Click on each <strong>memory</strong> to summon it to the main canvas.</li>
+          <li>Draw on the canvas manually, or use the <strong>Corrupt</strong> button to corrupt the memory automatically.</li>
+          <li>Then ask the network to <strong>Recall</strong> a memory based on the canvas contents.</li>
+        </ol>
+      </div>
+
+      <div class="row" id="main_row">
+        <div id="main" class="col-md-8">
+          <h2>Canvas</h2>
+
+          <div id="canvas_controls" class="well text-center">
+            <button type="button" class="btn btn-primary" id="recall-memory">Recall</button>
+            <button type="button" class="btn btn-default" id="add-memory">Add memory</button>
+            <button type="button" class="btn btn-default" id="corrupt">Corrupt</button>
+          </div>
+
+          <div id="main_canvas"></div>
+        </div>
+        <div id="saved" class="col-md-4">
+          <h2>Memories</h2>
+        </div>
+      </div>
+
+      <h2>How does this work?</h2>
+
+      <div class="row">
+        <div class="col-md-4">
+          <figure>
+            <img class="img-responsive" src="latex-image-1.png" alt="Simple Hopfield network with four nodes" />
+            <figcaption class="text-center text-muted">Simple Hopfield network with four nodes.</figcaption>
+          </figure>
+        </div>
+        <div class="col-sm-8">
+          <p>A Hopfield network is a network of nodes which are all connected to one another by weighted edges. Each cell in the above grid is a node in a Hopfield network, and is thus connected to every other cell with some specific weight.</p>
+          <p>
+            Each node can take on the value 0 or 1. (In the above demo, cells with value zero are white and cells with value one are black.) We can define an <em>energy function</em> which combines the learned weights with the cell values in the network:
+            $$E = -\sum_i \sum_j W_{ij} V_i V_j.$$
+          </p>
+        </div>
+      </div>
+
+      <h4>Recall</h4>
+      <p>
+        The recall task in a Hopfield network boils down to determining a node labeling that <strong>minimizes energy</strong>. We do this by visiting each node in the network and determining whether having that node <em>on</em> or <em>off</em> would better minimize energy. In short, we'll find the total value sent by all the other neurons to a particular neuron, and based on that value decide to turn on or off.
+        $$V_i \to \left\{\begin{array}{ll}1 & \text{if } \sum_{j \ne i} W_{ij} V_j > 0 \\ 0 & \text{otherwise.}\end{array}\right.$$
+      </p>
+      <p>We keep visiting and updating nodes until the network reaches some <strong>stable point</strong>. Which leads us to how these networks are trained!</p>
+
+      <h4>Learning</h4>
+      <p>
+        The actual &ldquo;memory&rdquo; of a Hopfield network lies in its weights. The network learns weights which <strong>make its memories <a href="http://en.wikipedia.org/wiki/Attractor">stable attractors</a></strong> in the energy function. Each weight between two nodes \(i, j\) is constructed directly from the input memories \(V^s\):
+        $$W_{ij} = \sum_{V^s} \left(2V_i^s - 1\right) \left(2V_j^s - 1\right).$$
+      </p>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Built by <a href="http://foldl.me">Jon Gauthier</a> in 2014. Thanks to <a href="http://d3js.org">d3</a> (visualization) and <a href="http://sivioco.com/blog/free-christmas-vector-icons">Sam Jones</a> (holiday theme).</p>
+      </div>
+    </footer>
+
+    <script src="/js/d3.v3.min.js"></script>
+    <script src="/js/underscore-min.js"></script>
+
+    <script src="hopfield2.js"></script>
+  </body>
+</html>

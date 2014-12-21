@@ -1,0 +1,35 @@
+.canvas_block {
+  fill: white;
+  stroke: black;
+  stroke-opacity: 0.1;
+}
+
+.canvas_block.on {
+  fill: black !important;
+}
+
+.canvas_block.trans {
+  transition: fill .2s ease;
+}
+
+.canvas_block.trans_slow {
+  transition: fill .3s ease;
+}
+
+svg {
+  display: block;
+  border: 1px solid #999;
+  margin: 5px auto;
+}
+
+#main_row {
+  min-height: 400px;
+}
+
+#main_canvas {
+  margin-bottom: 10px;
+}
+
+#saved svg {
+  margin: 15px auto;
+}
